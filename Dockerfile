@@ -1,4 +1,4 @@
-FROM node:16-alpine As build
+FROM node:16-slim As build
 RUN mkdir /app
 WORKDIR /app
 COPY package.json ./
@@ -9,7 +9,13 @@ RUN corepack prepare pnpm@7.9.2 --activate
 RUN pnpm install 
 RUN pnpm prisma generate
 COPY . .
+RUN pnpm build
 ENV NODE_ENV production
 RUN pnpm prune --prod
 USER node
-CMD [ "node", "index.js" ]
+
+FROM node:16-slim As production
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/prisma ./prisma
+CMD [ "node", "dist/index.js" ]
