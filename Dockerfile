@@ -5,7 +5,7 @@ COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY prisma ./prisma/
 RUN corepack enable
-RUN corepack prepare pnpm@latest --activate
+RUN corepack prepare pnpm@7.9.2 --activate
 RUN pnpm install 
 RUN pnpm prisma generate
 COPY . .
