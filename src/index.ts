@@ -10,4 +10,4 @@ app.get('/', async (req: Request, res: Response) => {
   res.json(foods)
 })
 
-app.listen(5000)
+app.listen(3000)

@@ -2,19 +2,16 @@ FROM node:16 As build
 RUN mkdir /app
 WORKDIR /app
 COPY package.json ./
-# COPY pnpm-lock.yaml ./
+COPY pnpm-lock.yaml ./
 COPY prisma ./prisma/
-# RUN corepack enable
-# RUN corepack prepare pnpm@7.9.3 --activate
-# RUN pnpm install 
-# RUN pnpm prisma generate
-RUN npm i
-RUN npx prisma generate
+RUN corepack enable
+RUN corepack prepare pnpm@7.9.1 --activate
+RUN pnpm install 
+RUN pnpm prisma generate
 COPY . .
-RUN npm run build
+RUN pnpm build
 ENV NODE_ENV production
-RUN npm ci --prod
-RUN npm cache clean --force
+RUN pnpm prune --prod
 USER node
 
 FROM node:16 As production
