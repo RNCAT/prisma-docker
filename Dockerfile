@@ -14,7 +14,7 @@ ENV NODE_ENV production
 RUN pnpm prune --prod
 USER node
 
-FROM node:16-alpine As production
+FROM node:16 As production
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/prisma ./prisma
